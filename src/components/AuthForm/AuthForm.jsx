@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom"
 import Signup from "./Signup"
 import Login from "./Login"
 import GoogleAuth from './GoogleAuth'
-import FacebookAuth from "./FacebookAuth"
 import GithubAuth from "./GithubAuth"
 
 const AuthForm = () => {
@@ -28,7 +27,6 @@ const AuthForm = () => {
         </Flex>
 
         <GoogleAuth prefix={isLogin ? "Log in" : "Sign up"} />
-        <FacebookAuth prefix={isLogin ? "Log in" : "Sign up"}/>
         <GithubAuth prefix={isLogin ? "Log in" : " Sign up"} />
       </VStack>
     </Box>
