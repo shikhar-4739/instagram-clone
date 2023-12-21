@@ -1,43 +1,43 @@
 import { useEffect, useState } from 'react'
 import useAuthStore from '../store/authStore'
 import useShowToast from './useShowToast'
-import { collection, doc, getDocs, limit, orderBy, query, where } from 'firebase/firestore'
+import { collection, getDocs, limit, orderBy, query, where } from 'firebase/firestore'
 import { firestore } from '../firebase/firebase'
 
 const useGetSuggestedUsers = () => {
-    const [isLoading, setISLoading] = useState(true)
+    const [isLoading, setIsLoading] = useState(true)
     const [suggestedUsers, setSuggestedUsers] = useState([])
     const authUser = useAuthStore(state => state.user)
     const showToast = useShowToast()
     
     useEffect(() => {
-        const useGetSuggestedUsers = async () => {
-            setISLoading(true)
+        const getSuggestedUsers = async () => {
+            setIsLoading(true)
             try {
-                const userRef = collection(firestore, "users")
+                const usersRef = collection(firestore, "users")
                 const q = query(
-                    userRef,
+                    usersRef,
                     where("uid","not-in", [authUser.uid, ...authUser.following]),
                     orderBy("uid"),
                     limit(3)
                 )
 
-                const querySnapshot = await getDocs(q)
+                const querySnapshot = await getDocs(q);
                 const users = [];
-                querySnapshot.forEach(doc => {
+                querySnapshot.forEach((doc) => {
                     users.push({...doc.data(), id: doc.id})
                 })
 
-                setSuggestedUsers(users)
+                setSuggestedUsers(users);
 
             } catch (error) {
-                showToast("Error" , error.message, "error")
+                showToast("Error" , error.message, "error");
             } finally {
-                setISLoading(false)
+                setIsLoading(false);
             }
         }
 
-        if(authUser) useGetSuggestedUsers()
+        if(authUser) getSuggestedUsers()
     }, [authUser, showToast])
 
   return { isLoading, suggestedUsers }
